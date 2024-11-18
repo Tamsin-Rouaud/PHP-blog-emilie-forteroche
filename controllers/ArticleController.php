@@ -15,6 +15,7 @@ class ArticleController
         $view->render("home", ['articles' => $articles]);
     }
 
+    // Modification effectuée : ajouté le nb de vues ligne 35/36
     /**
      * Affiche le détail d'un article.
      * @return void
@@ -30,6 +31,9 @@ class ArticleController
         if (!$article) {
             throw new Exception("L'article demandé n'existe pas.");
         }
+
+        // Incrémenter le compteur de vues.
+        $articleManager->incrementViews($id);
 
         $commentManager = new CommentManager();
         $comments = $commentManager->getAllCommentsByArticleId($id);
