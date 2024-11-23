@@ -21,6 +21,27 @@ class ArticleManager extends AbstractEntityManager
         return $articles;
     }
     
+public function getAllArticlesWithDetails() : array
+{
+    $sql = "SELECT 
+            a.id, 
+            a.title, 
+            a.date_creation, 
+            a.number_of_views, 
+            COUNT(c.id) AS comment_count
+        FROM article a
+        LEFT JOIN comment c ON a.id = c.id_article
+        GROUP BY a.id
+        ORDER BY a.date_creation DESC
+    ";
+
+    $result = $this->db->query($sql);
+    return $result->fetchAll();
+}
+
+
+
+
     /**
      * Récupère un article par son id.
      * @param int $id : l'id de l'article.
@@ -93,18 +114,18 @@ class ArticleManager extends AbstractEntityManager
         $this->db->query($sql, ['id' => $id]);
     }
 
-    // Modification des lignes 96 à 108 / Définition de la méthode d'incrémentation des vues
-    /**
+    
+/**
  * Incrémente le nombre de vues d'un article.
  * 
- * @param int $articleId L'identifiant de l'article.
+ * @param int $id L'identifiant de l'article.
  * @return void
  */
-public function incrementViews(int $articleId) : void
+public function incrementViews(int $id) : void
 {
     $sql = "UPDATE article SET number_of_views = number_of_views + 1 WHERE id = :id";
     $this->db->query($sql, [
-        'id' => $articleId
+        'id' => $id
     ]);
 }
 }

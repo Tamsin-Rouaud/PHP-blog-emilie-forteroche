@@ -18,4 +18,7 @@
     <?php } ?>
 </div>
 
+<div class="bottomLinks">
 <a class="submit" href="index.php?action=showUpdateArticleForm">Ajouter un article</a>
+<a class="submit" href="index.php?action=dashboard">Mon tableau de bord</a>
+</div>

@@ -112,6 +112,12 @@ form .formGrid .submit {
     border: none;
 }
 
+.bottomLinks {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
 /**
  * Coin replié des formulaires
  */

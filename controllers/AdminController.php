@@ -24,6 +24,36 @@ class AdminController {
             'articles' => $articles
         ]);
     }
+    /**
+    * Affiche le tableau de bord d'Admin
+    * @return void
+    */
+    public function showAdminDashboard() : void
+    {
+        // On vérifie que l'utilisateur est connecté.
+        $this->checkIfUserIsConnected();
+
+        
+
+        // On récupère les articles.
+        $articleManager = new ArticleManager();
+        $articles = $articleManager->getAllArticlesWithDetails();
+
+        // On récupère les commentaires.
+        $commentManager = new CommentManager();
+        $comments = $commentManager->getAllComments();
+
+        // On affiche le tableau de bord
+        $view = new View("Tableau de Bord");
+        $view->render("dashboard", [
+            'articles' => $articles,
+            'comments' => $comments
+        ]);
+
+        
+        // Incrémenter le compteur de vues.
+        // $articleManager->incrementViews($id);
+    }
 
     /**
      * Vérifie que l'utilisateur est connecté.

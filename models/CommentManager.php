@@ -5,6 +5,17 @@
  */
 class CommentManager extends AbstractEntityManager
 {
+
+    public function getAllComments() : array
+{
+    $sql = "SELECT id, content, id_article, date_creation FROM comment ORDER BY date_creation DESC";
+    $result = $this->db->query($sql);
+    return $result->fetchAll();
+}
+
+
+
+
     /**
      * Récupère tous les commentaires d'un article.
      * @param int $idArticle : l'id de l'article.
