@@ -14,8 +14,10 @@ class AdminController {
         // On vérifie que l'utilisateur est connecté.
         $this->checkIfUserIsConnected();
 
+        
         // On récupère les articles.
         $articleManager = new ArticleManager();
+        
         $articles = $articleManager->getAllArticles();
 
         // On affiche la page d'administration.
@@ -28,32 +30,29 @@ class AdminController {
     * Affiche le tableau de bord d'Admin
     * @return void
     */
-    public function showAdminDashboard() : void
-    {
-        // On vérifie que l'utilisateur est connecté.
-        $this->checkIfUserIsConnected();
+   public function showAdminDashboard() : void
+{
+    // On vérifie que l'utilisateur est connecté.
+    $this->checkIfUserIsConnected();
 
-        
+    // Initialiser le gestionnaire d'articles.
+    $articleManager = new ArticleManager();
 
-        // On récupère les articles.
-        $articleManager = new ArticleManager();
-        $articles = $articleManager->getAllArticlesWithDetails();
+    // Récupérer tous les articles avec leurs détails.
+    $articles = $articleManager->getAllArticlesWithDetails();
 
-        // On récupère les commentaires.
-        $commentManager = new CommentManager();
-        $comments = $commentManager->getAllComments();
+    // Récupérer tous les commentaires.
+    $commentManager = new CommentManager();
+    $comments = $commentManager->getAllComments();
 
-        // On affiche le tableau de bord
-        $view = new View("Tableau de Bord");
-        $view->render("dashboard", [
-            'articles' => $articles,
-            'comments' => $comments
-        ]);
+    // Afficher le tableau de bord.
+    $view = new View("Tableau de Bord");
+    $view->render("dashboard", [
+        'articles' => $articles,
+        'comments' => $comments,
+    ]);
+}
 
-        
-        // Incrémenter le compteur de vues.
-        // $articleManager->incrementViews($id);
-    }
 
     /**
      * Vérifie que l'utilisateur est connecté.

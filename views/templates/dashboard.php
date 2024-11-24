@@ -9,7 +9,7 @@
 
 <h2>Tableau de bord</h2>
 
-<table border="1">
+<table>
     <thead>
         <tr>
             <th>Titre de l'article</th>
@@ -21,11 +21,14 @@
     <tbody>
         <?php foreach ($articles as $article): ?>
             <tr>
-                <td><?= htmlspecialchars($article['title']) ?></td>
-                <td><?= htmlspecialchars($article['comment_count']) ?> commentaire(s)</td>
-                <td><?= htmlspecialchars($article['number_of_views']) ?> vue(s)</td>
-                <td><?= htmlspecialchars($article['date_creation']) ?></td>
+                <!-- Utilisation des getters pour récupérer les données de l'article -->
+                <td class="articleTitle"><?= $article->getTitle() ?></td>
+                <td><?= $article->getNumberOfComments() ?> commentaire(s)</td>
+                <td><?= $article->getNumberOfViews() ?> vue(s)</td>
+                <td><?= Utils::convertDateToFrenchFormat($article->getDateCreation()) ?></td>
             </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
+
+<a class="checkComments" href=#>Gérer les commentaires</a>

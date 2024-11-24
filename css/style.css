@@ -343,6 +343,48 @@ a.info {
     border: 1px solid var(--backgroundColor);
 }
 
+/**
+* Style du dashboard Admin
+*/
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    
+}
+
+thead tr {
+    text-align: center;
+}
+
+thead tr, tbody tr {
+    height: 50px;
+}
+
+td,th {
+    border: 1px solid black;
+}
+
+table tbody td {
+    padding-left: 10px;
+    color: white;
+    
+    
+}
+
+tbody tr:nth-child(odd) {
+    background-color:var(--commentPaleColor);
+    
+}
+
+tbody tr:nth-child(even) {
+    background-color: var(--commentColor);
+    
+}
+
+.articleTitle{
+    font-weight: bold;
+}
 /** 
  * Footer global de la page.
  */

@@ -36,8 +36,18 @@ public function getAllArticlesWithDetails() : array
     ";
 
     $result = $this->db->query($sql);
-    return $result->fetchAll();
+    $articles = [];
+
+    // Création des objets Article à partir des résultats
+    while ($article = $result->fetch()) {
+        $articleObj = new Article($article);  // Création de l'objet Article avec les données récupérées
+        $articleObj->setNumberOfComments($article['comment_count']);  // Ajout du nombre de commentaires
+        $articles[] = $articleObj;
+    }
+    
+    return $articles;
 }
+
 
 
 

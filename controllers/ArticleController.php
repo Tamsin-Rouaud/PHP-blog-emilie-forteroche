@@ -26,6 +26,10 @@ class ArticleController
         $id = Utils::request("id", -1);
 
         $articleManager = new ArticleManager();
+
+        // Incrémenter les vues de l'article
+        $articleManager->incrementViews($id);
+
         $article = $articleManager->getArticleById($id);
         
         if (!$article) {

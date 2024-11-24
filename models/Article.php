@@ -11,6 +11,7 @@
     private string $title = "";
     private string $content = "";
     private int $numberOfViews = 0;
+    private int $numberOfComments = 0;
     private ?DateTime $dateCreation = null;
     private ?DateTime $dateUpdate = null;  
 
@@ -85,20 +86,29 @@
      * Setter pour le nombre de vues d'un article. 
      * @param int $numberOfViews
      */
-    public function setnumberOfViews(int $numberOfViews) : void 
+    public function setNumberOfViews(int $numberOfViews) : void 
     {
         $this->numberOfViews = $numberOfViews;
     }
 
     /**
      * Getter pour le nombre de vues d'un article.
-     * @return int
+     * @return int $idArticle
      */
-    public function getnumberOfViews() : int 
+    public function getNumberOfViews() : int 
     {
         return $this->numberOfViews;
     }
 
+    // Méthode pour définir le nombre de commentaires pour cet article
+    public function setNumberOfComments(int $commentCount) : void {
+        $this->numberOfComments = $commentCount;
+    }
+
+    // Méthode pour récupérer le nombre de commentaires pour cet article
+    public function getNumberOfComments() : int {
+        return $this->numberOfComments;
+    }
 
     /**
      * Setter pour la date de création. Si la date est une string, on la convertit en DateTime.
