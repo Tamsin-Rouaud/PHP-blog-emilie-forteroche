@@ -14,8 +14,7 @@ class ArticleController
         $view = new View("Accueil");
         $view->render("home", ['articles' => $articles]);
     }
-
-    // Modification effectuée : ajouté le nb de vues ligne 35/36
+    
     /**
      * Affiche le détail d'un article.
      * @return void

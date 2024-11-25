@@ -13,7 +13,7 @@
     <thead>
         <tr>
             <th>Titre de l'article</th>
-            <th>Commentaires associés</th>
+            <th>Nombre de commentaire(s)</th>
             <th>Nombre de vues</th>
             <th>Date de création</th>
         </tr>
@@ -31,4 +31,7 @@
     </tbody>
 </table>
 
-<a class="checkComments" href=#>Gérer les commentaires</a>
+<div class="bottomLinks dashboard">
+<a class="submit" href="index.php?action=admin">Retour</a>
+<a class="submit" href="index.php?action=deleteComment">Suppression des commentaires</a>
+</div>

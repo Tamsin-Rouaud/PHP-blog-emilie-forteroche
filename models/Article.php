@@ -12,6 +12,7 @@
     private string $content = "";
     private int $numberOfViews = 0;
     private int $numberOfComments = 0;
+    private array $comments = []; // Propriété pour stocker les commentaires
     private ?DateTime $dateCreation = null;
     private ?DateTime $dateUpdate = null;  
 
@@ -108,6 +109,26 @@
     // Méthode pour récupérer le nombre de commentaires pour cet article
     public function getNumberOfComments() : int {
         return $this->numberOfComments;
+    }
+
+        // ... autres propriétés et méthodes
+
+    /**
+     * Setter pour les commentaires associés à l'article
+     * @param array $comments
+     */
+    public function setComments(array $comments) : void
+    {
+        $this->comments = $comments;
+    }
+
+    /**
+     * Getter pour les commentaires associés à l'article
+     * @return array
+     */
+    public function getComments() : array
+    {
+        return $this->comments;
     }
 
     /**

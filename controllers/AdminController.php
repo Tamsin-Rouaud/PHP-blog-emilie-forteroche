@@ -41,15 +41,53 @@ class AdminController {
     // Récupérer tous les articles avec leurs détails.
     $articles = $articleManager->getAllArticlesWithDetails();
 
-    // Récupérer tous les commentaires.
-    $commentManager = new CommentManager();
-    $comments = $commentManager->getAllComments();
-
     // Afficher le tableau de bord.
     $view = new View("Tableau de Bord");
     $view->render("dashboard", [
         'articles' => $articles,
-        'comments' => $comments,
+    ]);
+}
+
+ public function showAdminCommentByArticle(): void
+{
+    // // Vérifier que l'utilisateur est connecté
+    // $this->checkIfUserIsConnected();
+
+    // // Initialiser les gestionnaires d'articles et de commentaires
+    // $articleManager = new ArticleManager();
+    // $commentManager = new CommentManager();
+
+    // // Récupérer tous les articles
+    // $articles = $articleManager->getAllArticles();
+
+    // // Ajouter les commentaires à chaque article
+    // foreach ($articles as $article) {
+    //     $idArticle = $article->getId();
+    //     $comments = $commentManager->getAllCommentsByArticleId($idArticle); // Obtenez les commentaires pour chaque article
+    //     $article->setComments($comments);
+    // }
+
+    // // Passer les données à la vue
+    // $view = new View("Gestion des commentaires");
+    // $view->render("deleteComment", [
+    //     'articles' => $articles
+    // ]);
+
+    // Vérification si l'utilisateur est connecté
+    $this->checkIfUserIsConnected();
+
+    // Initialiser le gestionnaire d'articles et de commentaires
+    $articleManager = new ArticleManager();
+    $commentManager = new CommentManager();  // Assurez-vous que ce gestionnaire est initialisé
+
+    // Récupérer tous les articles
+    $articles = $articleManager->getAllArticles();
+
+    // Passer à la vue les articles et le gestionnaire de commentaires
+    $view = new View("Gestion des commentaires");
+    $view->render("deleteComment", [
+        'articles' => $articles,
+        'commentManager' => $commentManager,  // Passer le gestionnaire à la vue
     ]);
 }
 
@@ -205,4 +243,30 @@ class AdminController {
         // On redirige vers la page d'administration.
         Utils::redirect("admin");
     }
+
+   /**
+     * Suppression d'un commentaire.
+     * @return void
+     */
+    public function deleteComment(): void
+{
+    // Vérifier que l'utilisateur est connecté
+    $this->checkIfUserIsConnected();
+
+    // Récupérer l'ID du commentaire à supprimer
+    $idComment = Utils::request("id", -1);
+
+    // Si aucun ID n'est spécifié, redirection
+    if ($idComment === -1) {
+        Utils::redirect("deleteComment");
+    }
+
+    // Supprimer le commentaire
+    $commentManager = new CommentManager();
+    $commentManager->deleteCommentById($idComment);
+
+    // Rediriger vers la page de gestion des commentaires
+    Utils::redirect("deleteComment");
+}
+
 }
