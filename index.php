@@ -51,7 +51,7 @@ try {
 
         case 'deleteComment':
             $adminController = new AdminController();
-            $adminController->showAdminCommentByArticle();
+            $adminController->showAdminDeleteComment();
             break;
 
         case 'connectionForm':

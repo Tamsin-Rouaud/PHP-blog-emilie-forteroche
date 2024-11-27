@@ -61,7 +61,6 @@
         $this->content = $content;
     }
 
-    
     /**
      * Getter pour le contenu.
      * Retourne les $length premiers caractères du contenu.
@@ -111,8 +110,6 @@
         return $this->numberOfComments;
     }
 
-        // ... autres propriétés et méthodes
-
     /**
      * Setter pour les commentaires associés à l'article
      * @param array $comments
@@ -161,13 +158,33 @@
      * @param string $format : le format pour la convertion de la date si elle est une string.
      * Par défaut, c'est le format de date mysql qui est utilisé.
      */
-    public function setDateUpdate(string|DateTime $dateUpdate, string $format = 'Y-m-d H:i:s') : void 
-    {
-        if (is_string($dateUpdate)) {
-            $dateUpdate = DateTime::createFromFormat($format, $dateUpdate);
-        }
+    // public function setDateUpdate(string|DateTime $dateUpdate, string $format = 'Y-m-d H:i:s') : void 
+    // {
+    //     if (is_string($dateUpdate)) {
+    //         $dateUpdate = DateTime::createFromFormat($format, $dateUpdate);
+    //     }
+    //     $this->dateUpdate = $dateUpdate;
+    // }
+
+
+
+// Modification de la fonction qui posait problème lors de l'ajout d'un article.
+public function setDateUpdate(string|DateTime|null $dateUpdate, string $format = 'Y-m-d H:i:s') : void 
+{
+    if ($dateUpdate === null) {
+        $this->dateUpdate = null;  // Si la date est null, on affecte null
+    } elseif (is_string($dateUpdate)) {
+        $dateUpdate = DateTime::createFromFormat($format, $dateUpdate);
         $this->dateUpdate = $dateUpdate;
+    } else {
+        $this->dateUpdate = $dateUpdate;  // Si c'est déjà un DateTime, on l'affecte directement
     }
+}
+
+
+
+
+
 
     /**
      * Getter pour la date de mise à jour.

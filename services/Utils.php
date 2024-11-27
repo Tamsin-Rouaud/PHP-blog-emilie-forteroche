@@ -50,11 +50,11 @@ class Utils {
     }
 
     /**
-     * Cette méthode protège une chaine de caractères contre les attaques XSS.
-     * De plus, elle transforme les retours à la ligne en balises <p> pour un affichage plus agréable. 
-     * @param string $string : la chaine à protéger.
-     * @return string : la chaine protégée.
-     */
+    * Cette méthode protège une chaine de caractères contre les attaques XSS.
+    * De plus, elle transforme les retours à la ligne en balises <p> pour un affichage plus agréable. 
+    * @param string $string : la chaine à protéger.
+    * @return string : la chaine protégée.
+    */
     public static function format(string $string) : string
     {
         // Etape 1, on protège le texte avec htmlspecialchars.

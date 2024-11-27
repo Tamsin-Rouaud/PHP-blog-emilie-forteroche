@@ -9,8 +9,7 @@ class View
      * Le titre de la page.
      */
     private string $title;
-    
-    
+        
     /**
      * Constructeur. 
      */

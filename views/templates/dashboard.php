@@ -5,6 +5,7 @@
      * ainsi que sa date de création. Lien vers le détail des commentaires de chaque article pour pouvoir
      * supprimer les commentaires si nécessaire.
      */
+
 ?>
 
 <h2>Tableau de bord</h2>
@@ -12,10 +13,26 @@
 <table>
     <thead>
         <tr>
-            <th>Titre de l'article</th>
-            <th>Nombre de commentaire(s)</th>
-            <th>Nombre de vues</th>
-            <th>Date de création</th>
+            <th>
+                <a href="index.php?action=dashboard&sort=title&order=asc">▲</a>
+                    Titre de l'article
+                <a href="index.php?action=dashboard&sort=title&order=desc">▼</a>
+            </th>
+            <th>
+                <a href="index.php?action=dashboard&sort=comment_count&order=asc">▲</a>
+                    Nombre de commentaire(s)
+                <a href="index.php?action=dashboard&sort=comment_count&order=desc">▼</a>
+            </th>
+            <th>
+                <a href="index.php?action=dashboard&sort=number_of_views&order=asc">▲</a>
+                    Nombre de vues
+                <a href="index.php?action=dashboard&sort=number_of_views&order=desc">▼</a>
+            </th>
+            <th>
+                <a href="index.php?action=dashboard&sort=date_creation&order=asc">▲</a>
+                    Date de création
+                <a href="index.php?action=dashboard&sort=date_creation&order=desc">▼</a>
+            </th>
         </tr>
     </thead>
     <tbody>

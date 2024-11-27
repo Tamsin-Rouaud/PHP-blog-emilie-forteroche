@@ -21,36 +21,44 @@ class ArticleManager extends AbstractEntityManager
         return $articles;
     }
     
-public function getAllArticlesWithDetails() : array
-{
-    $sql = "SELECT 
-            a.id, 
-            a.title, 
-            a.date_creation, 
-            a.number_of_views, 
-            COUNT(c.id) AS comment_count
-        FROM article a
-        LEFT JOIN comment c ON a.id = c.id_article
-        GROUP BY a.id
-        ORDER BY a.date_creation DESC
-    ";
+    public function getAllArticlesWithDetails(string $sort = 'date_creation', string $order = 'DESC') : array
+    {
+        $allowedSorts = [
+            'title' => 'title',
+            'number_of_comments' => 'number_of_comments',
+            'number_of_views' => 'number_of_views',
+            'date_creation' => 'date_creation'
+        ];
+        $allowedOrders = ['asc', 'desc'];
 
-    $result = $this->db->query($sql);
-    $articles = [];
+        // Validation des paramètres
+        $sort = $allowedSorts[$sort] ?? 'date_creation';
+        $order = in_array($order, $allowedOrders) ? strtoupper($order) : 'DESC';
 
-    // Création des objets Article à partir des résultats
-    while ($article = $result->fetch()) {
-        $articleObj = new Article($article);  // Création de l'objet Article avec les données récupérées
-        $articleObj->setNumberOfComments($article['comment_count']);  // Ajout du nombre de commentaires
-        $articles[] = $articleObj;
+        $sql = "SELECT 
+                a.id, 
+                a.title, 
+                a.date_creation, 
+                a.number_of_views, 
+                COUNT(c.id) AS comment_count
+            FROM article a
+            LEFT JOIN comment c ON a.id = c.id_article
+            GROUP BY a.id
+            ORDER BY $sort $order
+        ";
+
+        $result = $this->db->query($sql);
+        $articles = [];
+
+        // Création des objets Article à partir des résultats
+        while ($article = $result->fetch()) {
+            $articleObj = new Article($article);  // Création de l'objet Article avec les données récupérées
+            $articleObj->setNumberOfComments($article['comment_count']);  // Ajout du nombre de commentaires
+            $articles[] = $articleObj;
+        }
+        
+        return $articles;
     }
-    
-    return $articles;
-}
-
-
-
-
 
     /**
      * Récupère un article par son id.
@@ -90,12 +98,14 @@ public function getAllArticlesWithDetails() : array
      */
     public function addArticle(Article $article) : void
     {
+        
         $sql = "INSERT INTO article (id_user, title, content, date_creation) VALUES (:id_user, :title, :content, NOW())";
         $this->db->query($sql, [
             'id_user' => $article->getIdUser(),
             'title' => $article->getTitle(),
             'content' => $article->getContent()
         ]);
+        
     }
 
     /**
@@ -110,7 +120,12 @@ public function getAllArticlesWithDetails() : array
             'title' => $article->getTitle(),
             'content' => $article->getContent(),
             'id' => $article->getId()
+
         ]);
+        if (empty($article->getDateUpdate())) {
+    $article->setDateUpdate(date('Y-m-d H:i:s'));  // Définit la date actuelle
+}
+
     }
 
     /**
@@ -125,17 +140,17 @@ public function getAllArticlesWithDetails() : array
     }
 
     
-/**
- * Incrémente le nombre de vues d'un article.
- * 
- * @param int $id L'identifiant de l'article.
- * @return void
- */
-public function incrementViews(int $id) : void
-{
-    $sql = "UPDATE article SET number_of_views = number_of_views + 1 WHERE id = :id";
-    $this->db->query($sql, [
-        'id' => $id
-    ]);
-}
+    /**
+    * Incrémente le nombre de vues d'un article.
+    * 
+    * @param int $id L'identifiant de l'article.
+    * @return void
+    */
+    public function incrementViews(int $id) : void
+    {
+        $sql = "UPDATE article SET number_of_views = number_of_views + 1 WHERE id = :id";
+        $this->db->query($sql, [
+            'id' => $id
+        ]);
+    }
 }

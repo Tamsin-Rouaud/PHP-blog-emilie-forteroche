@@ -15,36 +15,35 @@
         <p><strong>Nombre de commentaires :</strong> <?= $article->getNumberOfComments() ?></p>
 
         <!-- Liste des commentaires associés -->
-        <?php 
-        $comments = $commentManager->getAllCommentsByArticleId($article->getId()); 
+        <?php $comments = $commentManager->getAllCommentsByArticleId($article->getId()); 
         if (!empty($comments)): 
         ?>
-            <table>
-                <thead>
+        <table>
+            <thead>
+                <tr>
+                    <th>Commentaires</th>
+                    <th>Auteur</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($comments as $comment): ?>
                     <tr>
-                        <th>Commentaires</th>
-                        <th>Auteur</th>
-                        <th>Date</th>
-                        <th>Actions</th>
+                        <td><?= $comment->getContent() ?></td>
+                        <td><?= $comment->getPseudo() ?></td>
+                        <td><?= Utils::convertDateToFrenchFormat($comment->getDateCreation()) ?></td>
+                        <td>
+                            <a href="index.php?action=deleteComment&id=<?= $comment->getId() ?>"
+                                class="delete-button"
+                                <?= Utils::askConfirmation("Êtes-vous sûr de vouloir supprimer ce commentaire ?") ?>>
+                                Supprimer
+                            </a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($comments as $comment): ?>
-                        <tr>
-                            <td><?= $comment->getContent() ?></td>
-                            <td><?= $comment->getPseudo() ?></td>
-                            <td><?= Utils::convertDateToFrenchFormat($comment->getDateCreation()) ?></td>
-                            <td>
-                                <a href="index.php?action=deleteComment&id=<?= $comment->getId() ?>"
-                                   class="delete-button"
-                                   <?= Utils::askConfirmation("Êtes-vous sûr de vouloir supprimer ce commentaire ?") ?>>
-                                   Supprimer
-                                </a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
         <?php else: ?>
             <p>Aucun commentaire disponible pour cet article.</p>
         <?php endif; ?>
