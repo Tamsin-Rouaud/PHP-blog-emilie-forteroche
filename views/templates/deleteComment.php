@@ -1,13 +1,12 @@
 <?php 
     /** 
-     * Gestion de la partie suppression des commentaires en fonction des articles. Affichage de cette page via le lien "Gestion des commentaires de la partie dashboard.
-     * Supprimer les commentaires si nécessaire.
+     * Gestion de la partie suppression des commentaires en fonction des articles. Affichage de cette page via le lien "Suppression des commentaires de la partie dashboard..
      */
 ?>
 
-<h2>Gestion et suppression des commentaires</h2>
+<h2>Suppression des commentaires</h2>
 
-<?php foreach ($articles as $article): ?>
+<?php foreach ($articles as $article) { ?>
     <div class="article-section">
         <!-- Titre de l'article et ses informations -->
         <h3><?= $article->getTitle() ?></h3>
@@ -16,8 +15,7 @@
 
         <!-- Liste des commentaires associés -->
         <?php $comments = $commentManager->getAllCommentsByArticleId($article->getId()); 
-        if (!empty($comments)): 
-        ?>
+        if (!empty($comments)){?>
         <table>
             <thead>
                 <tr>
@@ -28,28 +26,27 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($comments as $comment): ?>
+                <?php foreach ($comments as $comment) { ?>
                     <tr>
                         <td><?= $comment->getContent() ?></td>
                         <td><?= $comment->getPseudo() ?></td>
                         <td><?= Utils::convertDateToFrenchFormat($comment->getDateCreation()) ?></td>
                         <td>
-                            <a href="index.php?action=deleteComment&id=<?= $comment->getId() ?>"
-                                class="delete-button"
+                            <a class="delete-button" href="index.php?action=deleteCommentById&id=<?= $comment->getId() ?>"                         
                                 <?= Utils::askConfirmation("Êtes-vous sûr de vouloir supprimer ce commentaire ?") ?>>
                                 Supprimer
                             </a>
                         </td>
                     </tr>
-                <?php endforeach; ?>
+                <?php }; ?>
             </tbody>
         </table>
-        <?php else: ?>
+        <?php } else { ?>
             <p>Aucun commentaire disponible pour cet article.</p>
-        <?php endif; ?>
+        <?php }; ?>
     </div>
     <hr>
-<?php endforeach; ?>
+<?php }; ?>
 
 <div class="bottomLinks">
     <a class="submit" href="index.php?action=dashboard">Retour au tableau de bord</a>

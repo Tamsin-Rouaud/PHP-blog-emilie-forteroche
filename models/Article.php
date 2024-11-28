@@ -153,33 +153,51 @@
     }
 
     /**
-     * Setter pour la date de mise à jour. Si la date est une string, on la convertit en DateTime.
-     * @param string|DateTime $dateUpdate
-     * @param string $format : le format pour la convertion de la date si elle est une string.
-     * Par défaut, c'est le format de date mysql qui est utilisé.
-     */
-    // public function setDateUpdate(string|DateTime $dateUpdate, string $format = 'Y-m-d H:i:s') : void 
-    // {
-    //     if (is_string($dateUpdate)) {
-    //         $dateUpdate = DateTime::createFromFormat($format, $dateUpdate);
-    //     }
-    //     $this->dateUpdate = $dateUpdate;
-    // }
+    * Ancienne version de setDateUpdate qui causait un problème :
+    * 
+    * Le bug provenait du fait que la méthode n'acceptait que des paramètres de type 
+    * string ou DateTime. Cependant, lors de l'ajout d'un article ou de la récupération 
+    * des données depuis la base, il était possible que la valeur de dateUpdate soit `null`.
+    * Cela entraînait une erreur de type puisque `null` n'était pas un type accepté par 
+    * la signature de la méthode. 
+    * 
+    * De plus, aucune vérification explicite pour `null` n'était présente dans la méthode,
+    * ce qui rendait l'affectation de la date impossible si celle-ci était absente.
+        * Setter pour la date de mise à jour. Si la date est une string, on la convertit en DateTime.
+        * @param string|DateTime $dateUpdate
+        * @param string $format : le format pour la convertion de la date si elle est une string.
+        * Par défaut, c'est le format de date mysql qui est utilisé.
+        */
+        // public function setDateUpdate(string|DateTime $dateUpdate, string $format = 'Y-m-d H:i:s') : void 
+        // {
+        //     if (is_string($dateUpdate)) {
+        //         $dateUpdate = DateTime::createFromFormat($format, $dateUpdate);
+        //     }
+        //     $this->dateUpdate = $dateUpdate;
+        // }
 
-
-
-// Modification de la fonction qui posait problème lors de l'ajout d'un article.
-public function setDateUpdate(string|DateTime|null $dateUpdate, string $format = 'Y-m-d H:i:s') : void 
-{
-    if ($dateUpdate === null) {
-        $this->dateUpdate = null;  // Si la date est null, on affecte null
-    } elseif (is_string($dateUpdate)) {
-        $dateUpdate = DateTime::createFromFormat($format, $dateUpdate);
-        $this->dateUpdate = $dateUpdate;
-    } else {
-        $this->dateUpdate = $dateUpdate;  // Si c'est déjà un DateTime, on l'affecte directement
+    /**
+    * Nouvelle version de setDateUpdate.
+    * Cette méthode gère désormais les cas où la date est `null`.
+    * Si la date est une string, elle est convertie en objet DateTime. 
+    * Si elle est déjà un objet DateTime, elle est directement affectée. 
+    * Sinon, on accepte aussi les valeurs nulles.
+    * Setter de DateUpdate
+    * @param string|DateTime|null $dateUpdate : La date de mise à jour ou null si absente.
+    * @param string $format : Le format pour la conversion de la date si elle est une string.
+    * Par défaut, le format utilisé est celui des dates MySQL (Y-m-d H:i:s).
+    */
+    public function setDateUpdate(string|DateTime|null $dateUpdate, string $format = 'Y-m-d H:i:s') : void 
+    {
+        if ($dateUpdate === null) {
+            $this->dateUpdate = null;  // Si la date est null, on affecte null
+        } elseif (is_string($dateUpdate)) {
+            $dateUpdate = DateTime::createFromFormat($format, $dateUpdate);
+            $this->dateUpdate = $dateUpdate;
+        } else {
+            $this->dateUpdate = $dateUpdate;  // Si c'est déjà un DateTime, on l'affecte directement
+        }
     }
-}
 
 
 

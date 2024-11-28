@@ -13,11 +13,9 @@ class AdminController {
     {
         // On vérifie que l'utilisateur est connecté.
         $this->checkIfUserIsConnected();
-
         
         // On récupère les articles.
         $articleManager = new ArticleManager();
-        
         $articles = $articleManager->getAllArticles();
 
         // On affiche la page d'administration.
@@ -32,20 +30,20 @@ class AdminController {
     */
     public function showAdminDashboard() : void
     {
-        // On vérifie que l'utilisateur est connecté.
+        // Vérification si l'utilisateur est connecté
         $this->checkIfUserIsConnected();
 
-        // Initialiser le gestionnaire d'articles.
+        // Initialise le gestionnaire d'articles.
         $articleManager = new ArticleManager();
 
         // Capture des paramètres de tri
         $sort = $_GET['sort'] ?? 'date'; // Tri par défaut : par date
         $order = $_GET['order'] ?? 'desc'; // Ordre par défaut : décroissant
 
-        // Récupérer tous les articles avec leurs détails.
+        // Récupére tous les articles avec leurs détails.
         $articles = $articleManager->getAllArticlesWithDetails($sort, $order);
 
-        // Afficher le tableau de bord.
+        // Affiche le tableau de bord.
         $view = new View("Tableau de Bord");
         $view->render("dashboard", [
             'articles' => $articles,
@@ -59,14 +57,14 @@ class AdminController {
         // Vérification si l'utilisateur est connecté
         $this->checkIfUserIsConnected();
 
-        // Initialiser le gestionnaire d'articles et de commentaires
+        // Initialise le gestionnaire d'articles et de commentaires
         $articleManager = new ArticleManager();
         $commentManager = new CommentManager();
 
-        // Récupérer tous les articles
+        // Récupére tous les articles
         $articles = $articleManager->getAllArticlesWithDetails();
 
-        // Passer à la vue les articles et le gestionnaire de commentaires
+        // Passe à la vue les articles et le gestionnaire de commentaires
         $view = new View("Gestion des commentaires");
         $view->render("deleteComment", [
             'articles' => $articles,
@@ -231,7 +229,7 @@ class AdminController {
      * Suppression d'un commentaire.
      * @return void
      */
-    public function deleteComment(): void
+    public function deleteCommentById(): void
     {
         // Vérifier que l'utilisateur est connecté
         $this->checkIfUserIsConnected();
@@ -239,17 +237,17 @@ class AdminController {
         // Récupérer l'ID du commentaire à supprimer
         $idComment = Utils::request("id", -1);
 
-        // Si aucun ID n'est spécifié, redirection
-        if ($idComment === -1) {
-            Utils::redirect("deleteComment");
-        }
+        // // Si aucun ID n'est spécifié, redirection
+        // if ($idComment === -1) {
+        //     Utils::redirect("deleteComment");
+        // }
 
         // Supprimer le commentaire
         $commentManager = new CommentManager();
         $commentManager->deleteCommentById($idComment);
 
         // Rediriger vers la page de gestion des commentaires
-        Utils::redirect("deleteComment");
+        Utils::redirect("showAdminDeleteComment");
     }
 
 }

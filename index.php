@@ -49,9 +49,14 @@ try {
             $adminController->showAdminDashboard();
             break;
 
-        case 'deleteComment':
+        case 'showAdminDeleteComment':
             $adminController = new AdminController();
             $adminController->showAdminDeleteComment();
+            break;
+
+        case 'deleteCommentById':
+            $adminController = new AdminController();
+            $adminController->deleteCommentById();
             break;
 
         case 'connectionForm':

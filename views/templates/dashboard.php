@@ -36,7 +36,7 @@
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($articles as $article): ?>
+        <?php foreach ($articles as $article) { ?>
             <tr>
                 <!-- Utilisation des getters pour récupérer les données de l'article -->
                 <td class="articleTitle"><?= $article->getTitle() ?></td>
@@ -44,11 +44,11 @@
                 <td><?= $article->getNumberOfViews() ?> vue(s)</td>
                 <td><?= Utils::convertDateToFrenchFormat($article->getDateCreation()) ?></td>
             </tr>
-        <?php endforeach; ?>
+        <?php }; ?>
     </tbody>
 </table>
 
 <div class="bottomLinks dashboard">
-<a class="submit" href="index.php?action=admin">Retour</a>
-<a class="submit" href="index.php?action=deleteComment">Suppression des commentaires</a>
+    <a class="submit" href="index.php?action=admin">Retour</a>
+    <a class="submit" href="index.php?action=deleteCommentById">Suppression des commentaires</a>
 </div>
