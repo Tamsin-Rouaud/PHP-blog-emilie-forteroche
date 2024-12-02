@@ -25,7 +25,7 @@ class ArticleManager extends AbstractEntityManager
     {
         $allowedSorts = [
             'title' => 'title',
-            'number_of_comments' => 'number_of_comments',
+            'comment_count' => 'comment_count',
             'number_of_views' => 'number_of_views',
             'date_creation' => 'date_creation'
         ];
@@ -53,7 +53,7 @@ class ArticleManager extends AbstractEntityManager
         // Création des objets Article à partir des résultats
         while ($article = $result->fetch()) {
             $articleObj = new Article($article);  // Création de l'objet Article avec les données récupérées
-            $articleObj->setNumberOfComments($article['comment_count']);  // Ajout du nombre de commentaires
+            $articleObj->setNumberOfComments((int)$article['comment_count']);  // Ajout du nombre de commentaires
             $articles[] = $articleObj;
         }
         
