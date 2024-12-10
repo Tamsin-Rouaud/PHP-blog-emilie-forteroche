@@ -54,18 +54,31 @@ class AdminController {
 
     public function showAdminDeleteComment(): void
     {
-        // Vérification si l'utilisateur est connecté
         $this->checkIfUserIsConnected();
 
         // Initialise le gestionnaire d'articles et de commentaires
         $articleManager = new ArticleManager();
         $commentManager = new CommentManager();
 
-        // Récupére tous les articles
+        // Récupére l'ID de l'article depuis les paramètres de la requête
+        $articleId = Utils::request('id');
+
+        if ($articleId) {
+        $article = $articleManager->getArticleById((int)$articleId);
+
+        if (!$article) {
+            throw new Exception("L'article demandé n'existe pas.");
+        }
+        // On passe l'article dans un tableau pour garder la structure existante dans la vue
+        $articles = [$article];
+
+        } else {
+        // Sinon, récupérer tous les articles
         $articles = $articleManager->getAllArticlesWithDetails();
+        }
 
         // Passe à la vue les articles et le gestionnaire de commentaires
-        $view = new View("Gestion des commentaires");
+        $view = new View("Suppression des commentaires");
         $view->render("deleteComment", [
             'articles' => $articles,
             'commentManager' => $commentManager,

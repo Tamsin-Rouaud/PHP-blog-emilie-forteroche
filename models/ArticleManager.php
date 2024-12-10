@@ -23,37 +23,35 @@ class ArticleManager extends AbstractEntityManager
     
     public function getAllArticlesWithDetails(string $sort = 'date_creation', string $order = 'DESC') : array
     {
+        // Liste des colonnes autorisées pour le tri
         $allowedSorts = [
             'title' => 'title',
             'comment_count' => 'comment_count',
             'number_of_views' => 'number_of_views',
             'date_creation' => 'date_creation'
         ];
+        // Liste des ordres autorisés pour le tri (ASC ou DESC)
         $allowedOrders = ['asc', 'desc'];
-
         // Validation des paramètres
+        // Si le paramètre `$sort` n'est pas dans la liste des colonnes autorisées, on utilise 'date_creation' par défaut.
         $sort = $allowedSorts[$sort] ?? 'date_creation';
+        // Si l'ordre `$order` n'est pas valide (ni 'asc' ni 'desc'), on utilise 'DESC' par défaut.
         $order = in_array($order, $allowedOrders) ? strtoupper($order) : 'DESC';
-
-        $sql = "SELECT 
-                a.id, 
-                a.title, 
-                a.date_creation, 
-                a.number_of_views, 
-                COUNT(c.id) AS comment_count
-            FROM article a
-            LEFT JOIN comment c ON a.id = c.id_article
-            GROUP BY a.id
-            ORDER BY $sort $order
-        ";
-
+        // - Les résultats sont triés dynamiquement en fonction des paramètres `$sort` et `$order`.
+        $sql = "SELECT a.id, a.title, a.date_creation, a.number_of_views, COUNT(c.id) AS comment_count
+        FROM article a LEFT JOIN comment c ON a.id = c.id_article GROUP BY a.id ORDER BY $sort $order";
+        // Exécution de la requête
         $result = $this->db->query($sql);
+        // Initialisation d'un tableau pour récupérer les valeurs de articles
         $articles = [];
 
         // Création des objets Article à partir des résultats
         while ($article = $result->fetch()) {
-            $articleObj = new Article($article);  // Création de l'objet Article avec les données récupérées
-            $articleObj->setNumberOfComments((int)$article['comment_count']);  // Ajout du nombre de commentaires
+            // Création de l'objet Article avec les données récupérées
+            $articleObj = new Article($article);  
+            // Ajout manuel du nombre de commentaires car inexistant en base
+            $articleObj->setNumberOfComments((int)$article['comment_count']); 
+            // Ajout de l'objet Article au tableau 
             $articles[] = $articleObj;
         }
         
